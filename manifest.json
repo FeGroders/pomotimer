@@ -3,14 +3,22 @@
     "version": "1.0.0",
     "description": "",
     "author": "Fernando Groders",
-    "browser_action": {
-        "default_popup": "popup.html"
-    },
     "manifest_version": 2,
+
+    "background": {
+        "scripts": [
+            "scripts/timer.js"
+        ]
+    },
     "icons": {
         "16": "src/img/icon.png",
         "48": "src/img/icon.png",
         "64": "src/img/icon.png",
         "128": "src/img/icon.png"
-    }
+    },
+
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": ["notifications"]
 }
