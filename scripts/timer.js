@@ -5,6 +5,7 @@ let hour = defaultHours;
 let minute = defaultMinutes;
 let second = defaultSeconds;
 let cron;
+let actualStage = 'pomodoro';
 let finalHour = '00:00:00';
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -84,13 +85,23 @@ chrome.runtime.onInstalled.addListener(() => {
     }
 
     function notify() {
+        let message;
+        switch (actualStage) {
+            case 'pomodoro':
+                message = 'One pomodoro completed, take a short break.';
+            case 'shortBreak':
+                message = 'Short break finished!';
+            case 'longBreak':
+                message = 'Long break finished!';
+        }
+
         chrome.notifications.create({
             type: 'basic',
              iconUrl: '../src/img/icon.png',
-            title: '25 minutes have passed',
-            message: 'One pomodoro completed, take a short break.',
+            title: defaultMinutes+' minutes have passed',
+            message: message,
             requireInteraction: true,
-            buttons: [{ title: 'Restart timer' }]
+            buttons: [{ title: 'Ok' }]
         })
     }
 
@@ -98,6 +109,7 @@ chrome.runtime.onInstalled.addListener(() => {
         defaultHours = 0;
         defaultMinutes = 25;
         defaultSeconds = 0;
+        actualStage = 'pomodoro';
         reset();
     }
 
@@ -105,6 +117,7 @@ chrome.runtime.onInstalled.addListener(() => {
         defaultHours = 0;
         defaultMinutes = 5;
         defaultSeconds = 0;
+        actualStage = 'shortBreak';
         reset();
     }
 
@@ -112,6 +125,7 @@ chrome.runtime.onInstalled.addListener(() => {
         defaultHours = 0;
         defaultMinutes = 15;
         defaultSeconds = 0;
+        actualStage = 'longBreak';
         reset();
     }
   });

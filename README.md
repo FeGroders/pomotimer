@@ -1,9 +1,13 @@
+<p align="center">
+    <img src="src/img/icon64.png">
+</p>
+
 <h1 align="center">
-    PomoTimer 🍅
+    PomoTimer
 </h1>
 
 <h4 align="center">
-  A Pomodoro Timer for Chrome 
+  A Pomodoro Timer for Chrome
 </h4>
 
 <p align="center">

@@ -2,12 +2,24 @@ body {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  width: 350px;
+  background-color: #ffffff;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   align-items: center;
   justify-content: center;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
+}
+
+#theme {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  z-index: 1;
+  visibility: hidden;
 }
 
 #logo {
@@ -67,8 +79,6 @@ button:active {
   box-shadow: inset 0px 1px 0px 0px #ffffff;
   background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
   background-color: #ffffff;
-  text-shadow: 0px 1px 0px #ffffff;
-  box-shadow: inset 0px 1px 0px 0px #ffffff;
 }
 #breaks button:hover {
   background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
@@ -80,14 +90,14 @@ button:active {
 }
 
 #btn-start {
-  color: #fff;
+  color: #ffffff;
   border: 1px solid #4CAF50;
   width: 80px;
   background: linear-gradient(to bottom, #6cc644 5%, #4CAF50 100%);
 }
 
 #btn-pause {
-  color: #fff;
+  color: #ffffff;
   border: 1px solid #f44336;
   width: 80px;
   background: linear-gradient(to bottom, #f74f43 5%, #f44336 100%);
