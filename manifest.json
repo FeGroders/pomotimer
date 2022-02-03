@@ -1,14 +1,12 @@
 {
     "name": "PomoTimer",
     "version": "1.0.0",
-    "description": "",
+    "description": "A minimalist Pomodoro Timer",
     "author": "Fernando Groders",
-    "manifest_version": 2,
-
+    "manifest_version": 3,
     "background": {
-        "scripts": [
-            "scripts/timer.js"
-        ]
+        "service_worker": "scripts/timer.js",
+        "type": "module"
     },
     "icons": {
         "16": "src/img/icon16.png",
@@ -16,9 +14,8 @@
         "64": "src/img/icon64.png",
         "128": "src/img/icon128.png"
     },
-
-    "browser_action": {
+    "action": {
         "default_popup": "popup.html"
     },
-    "permissions": ["notifications"]
+    "permissions": ["notifications", "alarms"]
 }

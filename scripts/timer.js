@@ -1,18 +1,18 @@
 let defaultHours = 0;
 let defaultMinutes = 25;
-let defaultSeconds = 0;
 let hour = defaultHours;
 let minute = defaultMinutes;
-let second = defaultSeconds;
-let cron;
 let actualStage = 'pomodoro';
-let finalHour = '00:00:00';
+let finalHour = '00:00';
 
 chrome.runtime.onInstalled.addListener(() => {
     refreshFinalHour();
+    setTime();
+
     chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
+        function(request, sendResponse) {
             if (request.type == 'start') {
+                console.log('start');
                 start();
             } else if (request.type == 'pause') {
                 pause();
@@ -25,50 +25,27 @@ chrome.runtime.onInstalled.addListener(() => {
             } else if (request.type == 'longBreak') {
                 setLongBreak();
             }
-            sendResponse({minute: minute, time: finalHour});
+            setTime();
         });
 
     function start() {
         pause();
-        cron = setInterval(() => { timer(); }, 1000);
+        chrome.alarms.create("timer", { periodInMinutes: 0.1 });
+        console.log(chrome.alarms.getAll());
     }
 
     function pause() {
-        clearInterval(cron);
+        chrome.alarms.clearAll();
+        console.log('pause');
+        console.log(chrome.alarms.getAll());
         refreshBadge();
     }
 
     function reset() {
         hour = defaultHours;
         minute = defaultMinutes;
-        second = defaultSeconds;
         refreshFinalHour();
-        chrome.browserAction.setBadgeText({text: ''}); 
-    }
-
-    function timer() {
-        if (second == 0 && minute == 0 && hour == 0) {
-            pause();
-            reset();
-            var audio = new Audio('/src/sound/alarm.mp3');
-                audio.addEventListener('canplaythrough', function() {
-                audio.volume = 0.5;
-                audio.play();
-            });
-            notify();
-            return;
-        }
-
-        if ((second -= 1) <= 0 && minute > 0) {
-            second = 59;
-            minute--;
-        }
-        if (minute == 0 && hour > 0) {
-            minute = 60;
-            hour--;
-        }
-        refreshFinalHour();
-        refreshBadge()
+        chrome.action.setBadgeText({text: ''}); 
     }
 
     function returnData(input) {
@@ -76,12 +53,12 @@ chrome.runtime.onInstalled.addListener(() => {
     }
 
     function refreshFinalHour() {
-        finalHour = returnData(hour) + ':' + returnData(minute) + ':' + returnData(second);
+        finalHour = returnData(hour) + ':' + returnData(minute);
     };
 
     function refreshBadge() {
-        chrome.browserAction.setBadgeBackgroundColor({ color: '#F00' });
-        chrome.browserAction.setBadgeText({text: minute+"'"}); 
+        chrome.action.setBadgeBackgroundColor({ color: '#F00' });
+        chrome.action.setBadgeText({text: minute+"'"}); 
     }
 
     function notify() {
@@ -108,7 +85,6 @@ chrome.runtime.onInstalled.addListener(() => {
     function setPomodoro(){
         defaultHours = 0;
         defaultMinutes = 25;
-        defaultSeconds = 0;
         actualStage = 'pomodoro';
         reset();
     }
@@ -116,7 +92,6 @@ chrome.runtime.onInstalled.addListener(() => {
     function setShortBreak(){
         defaultHours = 0;
         defaultMinutes = 5;
-        defaultSeconds = 0;
         actualStage = 'shortBreak';
         reset();
     }
@@ -124,8 +99,39 @@ chrome.runtime.onInstalled.addListener(() => {
     function setLongBreak(){
         defaultHours = 0;
         defaultMinutes = 15;
-        defaultSeconds = 0;
         actualStage = 'longBreak';
         reset();
     }
+
+    chrome.alarms.onAlarm.addListener(() => {
+        tick();
+    });
+
+    function tick(){
+        if (minute == 0 && hour == 0) {
+            pause();
+            reset();
+            notify();
+            var audio = new Audio('/src/sound/alarm.mp3');
+                audio.addEventListener('canplaythrough', function() {
+                audio.volume = 0.5;
+                audio.play();
+            });
+            return;
+        }
+
+        if ((minute -= 1) <= 0 && hour > 0) {
+            minute = 59;
+            hour--;
+        }
+
+        refreshFinalHour();
+        refreshBadge();  
+        setTime();
+    }
+
+    function setTime(){
+        chrome.runtime.sendMessage({type: 'setTime', time: finalHour});
+    }
   });
+
