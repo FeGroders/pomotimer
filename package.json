@@ -1,0 +1,22 @@
+{
+  "name": "pomotimer",
+  "version": "1.0.0",
+  "description": "Pomodoro timer for Chrome",
+  "main": "scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FeGroders/pomotimer.git"
+  },
+  "author": "Fernando Groders",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FeGroders/pomotimer/issues"
+  },
+  "homepage": "https://github.com/FeGroders/pomotimer#readme",
+  "devDependencies": {
+    "node-sass": "^7.0.1"
+  }
+}

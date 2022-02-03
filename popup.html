@@ -3,15 +3,17 @@
 <head>
     <title>PomoTimer</title>
     <script src="scripts/main.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <h1>PomoTimer</h1>
-    <button>Pomodoro</button>
-    <button>Short Break</button>    
-    <button>Long Break</button>
+    <h1 id="logo">PomoTimer</h1>
+    <div id="breaks">
+        <button id="btn-pomodoro"><p>Pomodoro</p></button>
+        <button id="btn-short-break"><p>Short Break</p></button>    
+        <button id="btn-long-break"><p>Long Break</p></button>
+    </div>
     <div id="timer">
-        <div id="time">00:00:00</div>
+        <div id="time"></div>
         <div id="controls">
             <button id="btn-start">Start</button>
             <button id="btn-pause">Pause</button>

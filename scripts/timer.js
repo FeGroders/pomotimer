@@ -12,11 +12,17 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
             if (request.type == 'start') {
-                start()
+                start();
             } else if (request.type == 'pause') {
-                pause()
+                pause();
             } else if (request.type == 'reset') {
-                reset()
+                reset();
+            } else if (request.type == 'pomodoro') {
+                setPomodoro();
+            } else if (request.type == 'shortBreak') {
+                setShortBreak();
+            } else if (request.type == 'longBreak') {
+                setLongBreak();
             }
             sendResponse({minute: minute, time: finalHour});
         });
@@ -86,5 +92,26 @@ chrome.runtime.onInstalled.addListener(() => {
             requireInteraction: true,
             buttons: [{ title: 'Restart timer' }]
         })
+    }
+
+    function setPomodoro(){
+        defaultHours = 0;
+        defaultMinutes = 25;
+        defaultSeconds = 0;
+        reset();
+    }
+
+    function setShortBreak(){
+        defaultHours = 0;
+        defaultMinutes = 5;
+        defaultSeconds = 0;
+        reset();
+    }
+
+    function setLongBreak(){
+        defaultHours = 0;
+        defaultMinutes = 15;
+        defaultSeconds = 0;
+        reset();
     }
   });

@@ -17,7 +17,25 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.runtime.sendMessage(null, {type: 'reset'}, function handler(response) {
             document.querySelector('#time').innerHTML = response.time;  
         });
-    });    
+    });  
+    
+    document.querySelector('#btn-pomodoro').addEventListener('click', function() {
+        chrome.runtime.sendMessage(null, {type: 'pomodoro'}, function handler(response) {
+            document.querySelector('#time').innerHTML = response.time;  
+        });
+    }); 
+
+    document.querySelector('#btn-short-break').addEventListener('click', function() {
+        chrome.runtime.sendMessage(null, {type: 'shortBreak'}, function handler(response) {
+            document.querySelector('#time').innerHTML = response.time;  
+        });
+    }); 
+
+    document.querySelector('#btn-long-break').addEventListener('click', function() {
+        chrome.runtime.sendMessage(null, {type: 'longBreak'}, function handler(response) {
+            document.querySelector('#time').innerHTML = response.time;  
+        });
+    }); 
 
     refreshing = setInterval(() => { 
         chrome.runtime.sendMessage(null, {type: 'getTime'}, function handler(response) {
