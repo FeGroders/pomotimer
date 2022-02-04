@@ -4,32 +4,33 @@ let hour = defaultHours;
 let minute = defaultMinutes;
 let actualStage = 'pomodoro';
 let finalHour = '00:00';
+let myExtId = 'nlkondbeopkkjmpjjgpjpjjoehnkkckn';
 
 chrome.runtime.onInstalled.addListener(() => {
     refreshFinalHour();
     setTime();
 
-    chrome.runtime.onMessage.addListener(
-        function(request, sendResponse) {
-            if (request.type == 'start') {
-                start();
-            } else if (request.type == 'pause') {
-                pause();
-            } else if (request.type == 'reset') {
-                reset();
-            } else if (request.type == 'pomodoro') {
-                setPomodoro();
-            } else if (request.type == 'shortBreak') {
-                setShortBreak();
-            } else if (request.type == 'longBreak') {
-                setLongBreak();
-            }
-            setTime();
-        });
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        if (request.type == 'start') {
+            start();
+        } else if (request.type == 'pause') {
+            pause();
+        } else if (request.type == 'reset') {
+            reset();
+        } else if (request.type == 'pomodoro') {
+            setPomodoro();
+        } else if (request.type == 'shortBreak') {
+            setShortBreak();
+        } else if (request.type == 'longBreak') {
+            setLongBreak();
+        } 
+        setTime();
+        sendResponse({ received: true });
+    });
 
     function start() {
         pause();
-        chrome.alarms.create("timer", { periodInMinutes: 0.1 }); //change to one minute
+        chrome.alarms.create("timer", { periodInMinutes: 1 }); //change to one minute
     }
 
     function pause() {
@@ -41,6 +42,7 @@ chrome.runtime.onInstalled.addListener(() => {
         hour = defaultHours;
         minute = defaultMinutes;
         refreshFinalHour();
+        chrome.alarms.clearAll();
         chrome.action.setBadgeText({text: ''}); 
     }
 
@@ -108,7 +110,10 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 
     function setTime(){
-        chrome.runtime.sendMessage({type: 'setTime', time: finalHour});
+        // validar se esta aberto o popup
+        console.log(view.length);
+        chrome.runtime.sendMessage(myExtId, {type: 'setTime', time: finalHour}, function handler(response) { });
+        console.log('Extension time set');
     }
 
     function tick(){
@@ -131,6 +136,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
         refreshFinalHour();
         refreshBadge();  
+        console.log(finalHour);
     }
   }
 );
