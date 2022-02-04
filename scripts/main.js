@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    chrome.runtime.sendMessage({type: 'openAction'}, function handler(response) { });
+
     document.querySelector('#btn-start').addEventListener('click', function() {
         chrome.runtime.sendMessage({type: 'start'}, function handler(response) { });
     });
